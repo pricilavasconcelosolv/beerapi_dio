@@ -3,15 +3,11 @@ package one.dio.beerapi.controller;
 import lombok.AllArgsConstructor;
 import one.dio.beerapi.dto.BeerDTO;
 import one.dio.beerapi.exception.BeerAlreadyRegisteredException;
+import one.dio.beerapi.exception.BeerNotFoundException;
 import one.dio.beerapi.service.BeerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -27,6 +23,12 @@ public class BeerController implements BeerControllerDocs {
     @ResponseStatus(HttpStatus.CREATED)
     public BeerDTO createBeer(@RequestBody @Valid BeerDTO beerDTO) throws BeerAlreadyRegisteredException {
         return beerService.createBeer(beerDTO);
+    }
+
+    @GetMapping("/{name}")
+    public BeerDTO findByName(@PathVariable String name) throws BeerNotFoundException {
+        return beerService.findByName(name);
+
     }
 
     @GetMapping

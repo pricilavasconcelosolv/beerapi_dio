@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import one.dio.beerapi.dto.BeerDTO;
 import one.dio.beerapi.entity.Beer;
 import one.dio.beerapi.exception.BeerAlreadyRegisteredException;
+import one.dio.beerapi.exception.BeerNotFoundException;
 import one.dio.beerapi.mapper.BeerMapper;
 import one.dio.beerapi.repository.BeerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,12 @@ public class BeerService {
         Beer beer = beerMapper.toModel(beerDTO);
         Beer savedBeer = beerRepository.save(beer);
         return beerMapper.toDTO(savedBeer);
+    }
+
+    public BeerDTO findByName(String name) throws BeerNotFoundException {
+        Beer foundBeer = beerRepository.findByName(name)
+                .orElseThrow(() -> new BeerNotFoundException(name));
+        return beerMapper.toDTO(foundBeer);
     }
 
     public List<BeerDTO> listAll() {
